@@ -9,13 +9,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 from infrastructure.psql.db import create_tables
 
 def init_database():
-    
     try:
         create_tables()
         print("✅ Tables created successfully")
         return True
         
     except Exception as e:
+        print(e)
         return False
 
 if __name__ == "__main__":
