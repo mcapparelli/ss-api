@@ -1,3 +1,3 @@
-from .currency_types import Currency
+from .currency_types import CurrencyType
 
-__all__ = ['Currency']
+__all__ = ['CurrencyType']

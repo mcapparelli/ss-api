@@ -1,4 +1,5 @@
 import uuid
+import decimal
 from sqlalchemy import Column, Integer, Numeric, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
@@ -37,14 +38,22 @@ class UserBalance(Base):
             ub.id = data["id"]
         return ub
 
-    def increment(self, amount: float) -> None:
-        amt = Decimal(str(amount))
+    def increment(self, amount: str) -> None:
+        try:
+            amt = Decimal(amount)
+        except (ValueError, decimal.InvalidOperation):
+            raise ValueError("Error incrementing balance")
+        
         if amt < 0:
             raise ValueError("Amount to increment must be positive")
         self.amount = (self.amount or Decimal("0")) + amt
 
-    def decrement(self, amount: float) -> None:
-        amt = Decimal(str(amount))
+    def decrement(self, amount: str) -> None:
+        try:
+            amt = Decimal(amount)
+        except (ValueError, decimal.InvalidOperation):
+            raise ValueError("Error decrementing balance")
+        
         if amt < 0:
             raise ValueError("Amount to decrement must be positive")
         current = self.amount or Decimal("0")

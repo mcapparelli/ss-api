@@ -1,6 +1,6 @@
 from enum import Enum
 
-class Currency(str, Enum):
+class CurrencyType(str, Enum):
     ARS = "ARS"  # Argentine Peso
     USD = "USD"  # US Dollar
     BTC = "BTC"  # Bitcoin
@@ -11,5 +11,5 @@ class Currency(str, Enum):
         return list(cls)
 
 __all__ = [
-    'Currency'
+    'CurrencyType'
 ]

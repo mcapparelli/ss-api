@@ -7,10 +7,12 @@ from .db import Base
 # Import all entities from their respective modules
 from source.user.domain.entities.user_entity import User
 from source.user.domain.entities.user_balance.user_balance_entity import UserBalance
+from source.transfer.domain.entities.transfer_entity import Transfer
 
 # Export all models for easy access
 __all__ = [
     'User',
     'UserBalance',
+    'Transfer',
     'Base'
 ]
