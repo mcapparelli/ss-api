@@ -119,8 +119,167 @@ The application uses the following environment variables (configured in docker-c
 ### API
 
 -   `POST /users` - Create new user with initial balances
--   `POST /swaps` - Create cryptocurrency swap
--   `POST /deposits` - Register deposit
+-   `POST /swap` - Create currency swap
+-   `POST /deposit` - Register deposit
+
+## 🚀 API Usage Examples
+
+### 1. Create a User
+
+Creates a new user with initial balances for all supported currencies (ARS, USD, BTC, ETH).
+
+```bash
+curl -X POST "http://localhost:8000/users" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe"
+  }'
+```
+
+**Response:**
+
+```json
+{
+	"id": "123e4567-e89b-12d3-a456-426614174000",
+	"name": "John Doe",
+	"balance": {
+		"balances": [
+			{ "currency": "ARS", "amount": 0 },
+			{ "currency": "USD", "amount": 0 },
+			{ "currency": "BTC", "amount": 0 },
+			{ "currency": "ETH", "amount": 0 }
+		]
+	}
+}
+```
+
+### 2. Make a Deposit
+
+Adds funds to a user's balance for a specific currency.
+
+```bash
+curl -X POST "http://localhost:8000/deposit" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "123e4567-e89b-12d3-a456-426614174000",
+    "amount": "1000.50",
+    "currency": "USD"
+  }'
+```
+
+**Response:**
+
+```json
+{
+	"id": "987fcdeb-51a2-43d5-b789-123456789abc",
+	"type": "DEPOSIT",
+	"user_id": "123e4567-e89b-12d3-a456-426614174000",
+	"status": "CONFIRMED",
+	"created_at": "2024-01-15T10:30:45.123456"
+}
+```
+
+### 3. Perform a Swap
+
+Exchange one currency for another using real-time exchange rates.
+
+#### Fiat to Crypto (USD → BTC)
+
+```bash
+curl -X POST "http://localhost:8000/swap" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "123e4567-e89b-12d3-a456-426614174000",
+    "amount": "100",
+    "currency": "USD",
+    "target_currency": "BTC"
+  }'
+```
+
+#### Crypto to Crypto (BTC → ETH)
+
+```bash
+curl -X POST "http://localhost:8000/swap" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "123e4567-e89b-12d3-a456-426614174000",
+    "amount": "0.001",
+    "currency": "BTC",
+    "target_currency": "ETH"
+  }'
+```
+
+#### Fiat to Fiat (USD → ARS)
+
+```bash
+curl -X POST "http://localhost:8000/swap" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "123e4567-e89b-12d3-a456-426614174000",
+    "amount": "50",
+    "currency": "USD",
+    "target_currency": "ARS"
+  }'
+```
+
+**Response:**
+
+```json
+{
+	"id": "ref-456789",
+	"type": "SWAP",
+	"status": "CONFIRMED",
+	"amount": "0.00234567",
+	"currency": "BTC",
+	"created_at": "2024-01-15T11:15:30.654321"
+}
+```
+
+### 4. View Transaction History
+
+Get the transaction history for a specific user.
+
+```bash
+curl -X GET "http://localhost:8000/user/123e4567-e89b-12d3-a456-426614174000/history"
+```
+
+### Supported Currencies
+
+-   **Fiat**: `ARS` (Argentine Peso), `USD` (US Dollar)
+-   **Crypto**: `BTC` (Bitcoin), `ETH` (Ethereum)
+
+### Complete Workflow Example
+
+```bash
+# 1. Create user
+USER_RESPONSE=$(curl -s -X POST "http://localhost:8000/users" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Alice"}')
+
+USER_ID=$(echo $USER_RESPONSE | jq -r '.id')
+
+# 2. Deposit USD
+curl -X POST "http://localhost:8000/deposit" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"user_id\": \"$USER_ID\",
+    \"amount\": \"500\",
+    \"currency\": \"USD\"
+  }"
+
+# 3. Swap USD to BTC
+curl -X POST "http://localhost:8000/swap" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"user_id\": \"$USER_ID\",
+    \"amount\": \"100\",
+    \"currency\": \"USD\",
+    \"target_currency\": \"BTC\"
+  }"
+
+# 4. Check transaction history
+curl -X GET "http://localhost:8000/user/$USER_ID/history"
+```
 
 ## 🔧 Development
 
