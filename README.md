@@ -43,29 +43,6 @@ The swap functionality is implemented using the **Strategy Pattern** to handle d
 -   **CryptoToCryptoStrategy**: Handles exchanges between crypto currencies (BTC ↔ ETH)
 -   **Future strategies**: MixedStrategy for different exchange types
 
-### Exchange Rate Provider
-
-Currently, the `get_exchange_rate` method is embedded within the swap strategies for simplicity. In a production environment, this could be refactored into a dedicated module:
-
-**Potential Architecture:**
-
-```
-source/transfer/infrastructure/
-└── exchange_rate_providers/
-    ├── __init__.py
-    ├── exchange_rate_interface.py
-    ├── dolar_api_provider.py
-    ├── crypto_api_provider.py
-    └── exchange_rate_factory.py
-```
-
-**Benefits of this approach:**
-
--   **Separation of Concerns**: Price fetching logic separated from swap business logic
--   **Extensibility**: Easy to add new price providers (Binance, CoinGecko, etc.)
--   **Testability**: Mock providers for unit testing
--   **Reusability**: Same providers can be used across all swap strategies
-
 ### Fee Service
 
 Another architectural consideration is implementing a dedicated fee calculation service:
