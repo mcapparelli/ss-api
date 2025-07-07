@@ -1,28 +1,23 @@
-from typing import List
-
 from source.transfer.application.use_cases.swap.strategies.crypto_to_crypto import CryptoToCryptoStrategy
+from source.transfer.application.use_cases.swap.strategies.crypto_to_fiat import CryptoToFiatStrategy
 from source.transfer.application.use_cases.swap.swap_result import SwapResult
 from .swap_interface import ISwap
 from .fiat_to_fiat_strategy import FiatToFiatStrategy
 from source.common_types.currency_types import CurrencyType
-# from .mixed_strategy import MixedStrategy
 
 class SwapStrategyFactory:
-    FIAT_CURRENCIES = {CurrencyType.ARS.value, CurrencyType.USD.value}
-    CRYPTO_CURRENCIES = {CurrencyType.BTC.value, CurrencyType.ETH.value}
-    
     def create_strategy(self, from_currency: str, to_currency: str) -> ISwap:
         self._validate_currencies(from_currency, to_currency)
         
-        from_is_fiat = from_currency in self.FIAT_CURRENCIES
-        to_is_fiat = to_currency in self.FIAT_CURRENCIES
+        from_is_fiat = CurrencyType(from_currency).is_fiat()
+        to_is_fiat = CurrencyType(to_currency).is_fiat()
         
         if from_is_fiat and to_is_fiat:
             return FiatToFiatStrategy()
         elif not from_is_fiat and not to_is_fiat:
             return CryptoToCryptoStrategy()
-        # else:
-        #     return MixedStrategy()
+        else:
+            return CryptoToFiatStrategy()
     
     def _validate_currencies(self, from_currency: str, to_currency: str) -> None:
         valid_currencies = [currency.value for currency in CurrencyType]

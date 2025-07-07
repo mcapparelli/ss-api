@@ -21,8 +21,6 @@ class CryptoToCryptoStrategy(ISwap):
         exchange_rate = await self._get_exchange_rate(from_currency, to_currency)
         converted_amount = amount_decimal * exchange_rate
         
-        balance.decrement(str(amount_decimal))
-        
         current_time = datetime.now()
         reference = str(uuid4())
 
@@ -50,8 +48,8 @@ class CryptoToCryptoStrategy(ISwap):
     
     async def _get_exchange_rate(self, from_currency: str, to_currency: str) -> Decimal:
         COINGECKO_IDS = {
-            "BTC": "bitcoin",
-            "ETH": "ethereum"
+            "BTC": "btc",
+            "ETH": "eth"
         }
         
         try:

@@ -5,10 +5,6 @@ from sqlalchemy import select
 from source.user.domain.entities.user_entity import User
 from source.user.domain.entities.user_balance.user_balance_entity import UserBalance
 from source.transfer.domain.entities.transfer_entity import Transfer
-# from pycoingecko import CoinGeckoAPI
-#         cg = CoinGeckoAPI()
-#         price = cg.get_price(ids="ars", vs_currencies="usd")
-#         print(price)
 
 class SwapUseCase:
     def __init__(self, db: AsyncSession):
