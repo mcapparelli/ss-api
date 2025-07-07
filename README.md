@@ -45,7 +45,7 @@ The repository pattern is omitted across all modules for simplicity - entities d
 1. **Clone the repository**
 
     ```bash
-    git clone <repository-url>
+    git clone [<repository-url>](https://github.com/mcapparelli/ss-api)
     cd ss-api
     ```
 
