@@ -1,7 +1,14 @@
+import os
 from decimal import Decimal
 import aiohttp
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class PriceProvider:
+    COINGECKO_URL = os.getenv("COINGECKO_API_URL", "https://api.coingecko.com/api/v3")
+    DOLAR_API_URL = os.getenv("DOLAR_API_URL", "https://dolarapi.com/v1")
+
     @staticmethod
     async def get_crypto_rate(from_currency: str, to_currency: str) -> Decimal:
         FROM_COINGECKO_IDS = {
@@ -20,7 +27,7 @@ class PriceProvider:
             async with aiohttp.ClientSession() as session:
                 from_id = FROM_COINGECKO_IDS[from_currency]
                 to_id = TO_COINGECKO_IDS[to_currency]
-                url = f"https://api.coingecko.com/api/v3/simple/price?ids={from_id}&vs_currencies={to_id}"
+                url = f"{PriceProvider.COINGECKO_URL}/simple/price?ids={from_id}&vs_currencies={to_id}"
                 
                 async with session.get(url) as response:
                     if response.status != 200:
@@ -37,7 +44,7 @@ class PriceProvider:
     async def get_fiat_rate(from_currency: str, to_currency: str) -> Decimal:
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.get("https://dolarapi.com/v1/dolares/blue") as response:
+                async with session.get(f"{PriceProvider.DOLAR_API_URL}/dolares/blue") as response:
                     if response.status != 200:
                         raise ValueError("Failed to fetch exchange rate from DolarAPI")
                     

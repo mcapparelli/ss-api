@@ -27,6 +27,8 @@ services:
         environment:
             - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/postgres
             - ENV=DEV
+            - COINGECKO_URL=https://api.coingecko.com/api/v3
+            - DOLAR_API_URL=https://dolarapi.com/v1
         depends_on:
             db:
                 condition: service_healthy

@@ -41,7 +41,7 @@ The swap functionality is implemented using the **Strategy Pattern** to handle d
 
 -   **FiatToFiatStrategy**: Handles exchanges between fiat currencies (USD ↔ ARS)
 -   **CryptoToCryptoStrategy**: Handles exchanges between crypto currencies (BTC ↔ ETH)
--   **Future strategies**: MixedStrategy for different exchange types
+-   **CryptoToFiatStrategy**: Handles exchanges between crypto and fiat currencies (BTC ↔ ARS)
 
 ### Fee Service
 
