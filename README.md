@@ -86,7 +86,7 @@ Future refactoring should consider the above patterns as the business requiremen
 1. **Clone the repository**
 
     ```bash
-    git clone [<repository-url>](https://github.com/mcapparelli/ss-api)
+    git clone [repository-url](https://github.com/mcapparelli/ss-api)
     cd ss-api
     ```
 
