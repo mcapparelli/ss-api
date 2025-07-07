@@ -40,7 +40,8 @@ The repository pattern is omitted across all modules for simplicity - entities d
 The swap functionality is implemented using the **Strategy Pattern** to handle different types of currency exchanges:
 
 -   **FiatToFiatStrategy**: Handles exchanges between fiat currencies (USD ↔ ARS)
--   **Future strategies**: CryptoToCryptoStrategy, MixedStrategy for different exchange types
+-   **CryptoToCryptoStrategy**: Handles exchanges between crypto currencies (BTC ↔ ETH)
+-   **Future strategies**: MixedStrategy for different exchange types
 
 ### Exchange Rate Provider
 
