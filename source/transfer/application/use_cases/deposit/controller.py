@@ -1,20 +1,25 @@
+from decimal import Decimal
+import uuid
 from fastapi import HTTPException, Depends
 from pydantic import BaseModel
+from source.common_types.currency_types import CurrencyType
+from source.common_types.transfer_operation_types import TransferOperationType
+from source.common_types.transfer_status_types import TransferStatusType
 from sqlalchemy.ext.asyncio import AsyncSession
 from infrastructure.psql.db import get_db
 from source.transfer.application.use_cases.deposit.use_case import DepositUseCase
 
 class DepositResponse(BaseModel):
     id: str
-    type: str
+    type: TransferOperationType = TransferOperationType.DEPOSIT
     user_id: str
-    status: str
+    status: TransferStatusType
     created_at: str
 
 class DepositRequest(BaseModel):
-    user_id: str
-    amount: float
-    currency: str
+    user_id: uuid.UUID
+    amount: Decimal
+    currency: CurrencyType
 
 async def deposit(
     request: DepositRequest,
@@ -28,7 +33,7 @@ async def deposit(
 
     return DepositResponse(
         id=str(transaction.id),
-        type=transaction.type,
+        type=TransferOperationType.DEPOSIT.value,
         user_id=str(transaction.user_id),
         status=transaction.status,
         created_at=transaction.created_at.isoformat(),

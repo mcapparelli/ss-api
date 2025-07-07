@@ -1,5 +1,8 @@
+from decimal import Decimal
 from fastapi import HTTPException, Depends
 from pydantic import BaseModel
+from source.common_types.currency_types import CurrencyType
+from source.common_types.transfer_status_types import TransferStatusType
 from sqlalchemy.ext.asyncio import AsyncSession
 from infrastructure.psql.db import get_db
 from source.transfer.application.use_cases.swap.use_case import SwapUseCase
@@ -7,16 +10,16 @@ from source.transfer.application.use_cases.swap.use_case import SwapUseCase
 class SwapResponse(BaseModel):
     id: str
     type: str
-    status: str
-    amount: str
-    currency: str
+    status: TransferStatusType
+    amount: Decimal
+    currency: CurrencyType
     created_at: str
 
 class SwapRequest(BaseModel):
     user_id: str
-    amount: str
-    currency: str
-    target_currency: str
+    amount: Decimal
+    currency: CurrencyType
+    target_currency: CurrencyType
 
 async def swap(
     request: SwapRequest,
