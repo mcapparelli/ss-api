@@ -1,8 +1,8 @@
-from source.transfer.application.use_cases.swap.strategies.crypto_to_crypto import CryptoToCryptoStrategy
-from source.transfer.application.use_cases.swap.strategies.crypto_to_fiat import CryptoToFiatStrategy
+from source.transfer.application.use_cases.swap.strategies.crypto_to_crypto.crypto_to_crypto import CryptoToCryptoStrategy
+from source.transfer.application.use_cases.swap.strategies.crypto_to_fiat.crypto_to_fiat import CryptoToFiatStrategy
 from source.transfer.application.use_cases.swap.swap_result import SwapResult
-from .swap_interface import ISwap
-from .fiat_to_fiat_strategy import FiatToFiatStrategy
+from ..swap_interface import ISwap
+from source.transfer.application.use_cases.swap.strategies.fiat_to_fiat_strategy.fiat_to_fiat_strategy import FiatToFiatStrategy
 from source.common_types.currency_types import CurrencyType
 
 class SwapStrategyFactory:

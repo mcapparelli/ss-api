@@ -1,5 +1,5 @@
 from decimal import Decimal
-from source.transfer.application.use_cases.swap.strategies.swap_strategy_factory import SwapStrategyFactory
+from source.transfer.application.use_cases.swap.strategies.swap_strategy_factory.swap_strategy_factory import SwapStrategyFactory
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from source.user.domain.entities.user_entity import User

@@ -6,11 +6,9 @@ import unittest
 import uuid
 from decimal import Decimal
 
-# Agregar el directorio raíz al path para importar módulos
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../../')))
 
-# Importar las entidades para que SQLAlchemy las reconozca
 from source.user.domain.entities.user_entity import User
 from source.user.domain.entities.user_balance.user_balance_entity import UserBalance
 from source.common_types import CurrencyType
