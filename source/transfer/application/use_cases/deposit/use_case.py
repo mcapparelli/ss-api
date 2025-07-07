@@ -32,7 +32,9 @@ class DepositUseCase:
             user_id=user_id,
             status=TransferStatusType.CONFIRMED.value,
             reference=None,
-            created_at=datetime.utcnow()
+            created_at=datetime.utcnow(),
+            amount=str(amount),
+            currency=currency
         )
         
         self.db.add(transfer)

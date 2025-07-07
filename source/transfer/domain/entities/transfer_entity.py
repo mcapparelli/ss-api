@@ -13,14 +13,17 @@ class Transfer(Base):
     status = Column(String, nullable=False)
     reference = Column(String, nullable=True)
     created_at = Column(DateTime, nullable=False)
+    amount = Column(String, nullable=False)
+    currency = Column(String, nullable=False)
     
 
-    def __init__(self, type: str, user_id: str, status: str, reference: str = None, created_at: str = None):
+    def __init__(self, type: str, user_id: str, status: str, reference: str = None, created_at: str = None, amount: str = None, currency: str = None):
         self.type = type
         self.user_id = user_id
         self.status = status
         self.reference = reference
-        if created_at:
-            self.created_at = created_at
+        self.created_at = created_at
+        self.amount = amount
+        self.currency = currency
 
    
