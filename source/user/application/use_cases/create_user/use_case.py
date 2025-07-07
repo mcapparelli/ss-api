@@ -11,5 +11,6 @@ class CreateUserUseCase:
         user = create_user(name)
         self.db.add(user)
         await self.db.commit()
-        await self.db.refresh(user, attribute_names=['balances'])
+
+        print(f"user: {user}")
         return user

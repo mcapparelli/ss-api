@@ -6,15 +6,11 @@ class CurrencyType(str, Enum):
     BTC = "BTC"
     ETH = "ETH"
 
-    FIAT_CURRENCIES = {ARS, USD}
-    CRYPTO_CURRENCIES = {BTC, ETH}
-
     def is_fiat(self):
-        return self in self.FIAT_CURRENCIES
+        return self in {CurrencyType.ARS, CurrencyType.USD}
 
     def is_crypto(self):
-        return self in self.CRYPTO_CURRENCIES
-
+        return self in {CurrencyType.BTC, CurrencyType.ETH}
 
     @classmethod
     def valid_currencies(cls):

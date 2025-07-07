@@ -7,7 +7,7 @@ from infrastructure.psql.db import get_db
 class UserResponse(BaseModel):
     id: str
     name: str
-    balance: dict
+    balance: list
 
 class CreateUserRequest(BaseModel):
     name: str
@@ -25,5 +25,5 @@ async def create_user(
     return UserResponse(
         id=str(user.id),
         name=user.name,
-        balance={"balances": [{"currency": b.currency, "amount": float(b.amount or 0)} for b in user.balances]},
+        balance=[{"currency": b.currency, "amount": float(b.amount or 0)} for b in user.balances]
     )

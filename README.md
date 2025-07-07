@@ -140,16 +140,14 @@ curl -X POST "http://localhost:8000/users" \
 
 ```json
 {
-	"id": "123e4567-e89b-12d3-a456-426614174000",
+	"id": "c538ff42-d559-4ab8-bcb3-1c5d243176a2",
 	"name": "John Doe",
-	"balance": {
-		"balances": [
-			{ "currency": "ARS", "amount": 0 },
-			{ "currency": "USD", "amount": 0 },
-			{ "currency": "BTC", "amount": 0 },
-			{ "currency": "ETH", "amount": 0 }
-		]
-	}
+	"balance": [
+		{ "currency": "ARS", "amount": 0.0 },
+		{ "currency": "USD", "amount": 0.0 },
+		{ "currency": "BTC", "amount": 0.0 },
+		{ "currency": "ETH", "amount": 0.0 }
+	]
 }
 ```
 
