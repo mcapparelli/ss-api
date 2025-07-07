@@ -33,6 +33,69 @@ All financial operations are recorded in an immutable ledger system for traceabi
 
 The repository pattern is omitted across all modules for simplicity - entities directly use database sessions. This can be improved in future iterations for better abstraction.
 
+## 🔄 Swap System Architecture
+
+### Current Implementation
+
+The swap functionality is implemented using the **Strategy Pattern** to handle different types of currency exchanges:
+
+-   **FiatToFiatStrategy**: Handles exchanges between fiat currencies (USD ↔ ARS)
+-   **Future strategies**: CryptoToCryptoStrategy, MixedStrategy for different exchange types
+
+### Exchange Rate Provider
+
+Currently, the `get_exchange_rate` method is embedded within the swap strategies for simplicity. In a production environment, this could be refactored into a dedicated module:
+
+**Potential Architecture:**
+
+```
+source/transfer/infrastructure/
+└── exchange_rate_providers/
+    ├── __init__.py
+    ├── exchange_rate_interface.py
+    ├── dolar_api_provider.py
+    ├── crypto_api_provider.py
+    └── exchange_rate_factory.py
+```
+
+**Benefits of this approach:**
+
+-   **Separation of Concerns**: Price fetching logic separated from swap business logic
+-   **Extensibility**: Easy to add new price providers (Binance, CoinGecko, etc.)
+-   **Testability**: Mock providers for unit testing
+-   **Reusability**: Same providers can be used across all swap strategies
+
+### Fee Service
+
+Another architectural consideration is implementing a dedicated fee calculation service:
+
+**Potential Architecture:**
+
+```
+source/transfer/domain/services/
+└── fee_service/
+    ├── __init__.py
+    ├── fee_strategy_interface.py
+    ├── percentage_fee_strategy.py
+    ├── fixed_fee_strategy.py
+    └── fee_strategy_factory.py
+```
+
+**Features:**
+
+-   **Operation-based fees**: Different fee structures for SWAP, DEPOSIT, WITHDRAWAL
+-   **User tier-based fees**: VIP users with reduced fees
+-   **Dynamic fees**: Based on market conditions or volume
+
+### Trade-offs
+
+The current simplified implementation prioritizes:
+
+-   **Quick development**: Faster time to market
+-   **Business validation**: Test core functionality before architectural investment
+
+Future refactoring should consider the above patterns as the business requirements become more defined.
+
 ## 📦 Installation and Usage
 
 ### Prerequisites
