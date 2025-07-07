@@ -25,7 +25,8 @@ services:
         ports:
             - "8000:8000"
         environment:
-            - DATABASE_URL=postgresql+psycopg2://postgres:postgres@db:5432/postgres
+            - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/postgres
+            - ENV=DEV
         depends_on:
             db:
                 condition: service_healthy

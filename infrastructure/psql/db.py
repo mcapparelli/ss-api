@@ -1,26 +1,42 @@
 import os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker, declarative_base
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")  # ej: "postgresql+asyncpg://user:pass@host/db"
 
-engine = create_engine(DATABASE_URL, echo=True, future=True)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+ECHO = os.getenv("ENV") != "PROD"
 
-# Create a single Base instance for all models
+# Engine async
+engine = create_async_engine(DATABASE_URL, echo=ECHO, future=True)
+
+AsyncSessionLocal = sessionmaker(
+    bind=engine,
+    class_=AsyncSession,
+    autocommit=False,
+    autoflush=False,
+    expire_on_commit=False,
+)
+
 Base = declarative_base()
 
-from .models import Base
-
 def create_tables():
-    Base.metadata.create_all(bind=engine)
+    import asyncio
+    from sqlalchemy import MetaData
+    
+    metadata = Base.metadata
+    async def run():
+        async with engine.begin() as conn:
+            await conn.run_sync(metadata.create_all)
+    asyncio.run(run())
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close() 
+async def get_db():
+    async with AsyncSessionLocal() as session:
+        try:
+            yield session
+            await session.commit()
+        except:
+            await session.rollback()
+            raise

@@ -6,6 +6,10 @@ class Currency(str, Enum):
     BTC = "BTC"  # Bitcoin
     ETH = "ETH"  # Ethereum
 
+    @classmethod
+    def valid_currencies(cls):
+        return list(cls)
+
 __all__ = [
     'Currency'
 ]

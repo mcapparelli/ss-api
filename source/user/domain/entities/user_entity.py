@@ -1,29 +1,30 @@
-from sqlalchemy import Column, String, Integer
-from sqlalchemy.orm import declarative_base, relationship
-from typing import Dict 
-
-Base = declarative_base()
+import uuid
+from sqlalchemy import Column, String
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
+from typing import Dict
+from infrastructure.psql.db import Base
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    balances = relationship("UserBalance", back_populates="user")
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String, nullable=False)
+    balances = relationship("UserBalance", back_populates="user", cascade="all, delete-orphan")
 
-    def __repr__(self):
-        return f"<User(id={self.id}, name='{self.name}')>"
+    def __init__(self, name: str):
+        self.name = name
 
     def to_dict(self) -> Dict:
         return {
-            "id": self.id,
+            "id": str(self.id),
             "name": self.name,
-            "balances": [balance.to_dict() for balance in self.balances]
+            "balances": [b.to_dict() for b in self.balances]
         }
 
     @classmethod
-    def from_dict(cls, data: Dict) -> 'User':
-        return cls(
-            id=data.get("id"),
-            name=data.get("name")
-        )
+    def from_dict(cls, data: Dict) -> "User":
+        user = cls(name=data["name"])
+        if data.get("id"):
+            user.id = uuid.UUID(data["id"])
+        return user

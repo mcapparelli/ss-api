@@ -10,7 +10,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../../')))
 
 from source.user.domain.entities.user_balance.user_balance_entity import UserBalance
-from common_types.currency_types import Currency
+from source.common_types import Currency
 
 class TestUserBalanceEntity(unittest.TestCase):
     
